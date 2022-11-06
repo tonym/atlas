@@ -7,10 +7,19 @@ const AppWrapper = styled('div')`
   padding-top: 80px;
 `;
 
+enum TimeFormat {
+  Twelve = 'h:mm:ss aaa',
+  TwentyFour = 'HH:mm:ss'
+}
+
 function App() {
   const [date] = useState<Date>(new Date());
-  const [timeFormat] = useState<string>('HH:mm:ss');
+  const [timeFormat, setTimeFormat] = useState<'Twelve' | 'TwentyFour'>('Twelve');
   const [dateFormat] = useState<string>('d MMMM yyyy');
+
+  const toggleTimeFormat = () => {
+    setTimeFormat(timeFormat === 'Twelve' ? 'TwentyFour' : 'Twelve');
+  };
 
   return (
     <AppWrapper className="App">
@@ -23,14 +32,14 @@ function App() {
         </Toolbar>
       </AppBar>
       <Container>
-        <Typography align="center" paragraph variant="h6">
+        <Typography align="center" paragraph variant="h5">
           Session start time:
         </Typography>
         <Grid container justifyContent="center">
-          <Card variant="outlined">
+          <Card onClick={toggleTimeFormat} sx={{ cursor: 'pointer' }} variant="outlined">
             <CardContent>
-              <Typography component="span" fontWeight="700" variant="h2">
-                {format(date, timeFormat)}
+              <Typography component="span" fontWeight="500" variant="h2">
+                {format(date, TimeFormat[timeFormat])}
               </Typography>
             </CardContent>
           </Card>
